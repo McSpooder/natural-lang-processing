@@ -45,6 +45,7 @@ PP -> Prep NP
 VP -> Verb
 VP -> Verb NP
 VP -> VP PP
+PP -> Prep NP
 
 This is a fairly standard grammar and will service us here. The treatise
 on this subject is
@@ -89,10 +90,13 @@ np([X|T],np(det(X),NP2),Rem):-
 	det(X),
 	np2(T,NP2,Rem).
 np(Sentence,Parse,Rem):- np2(Sentence,Parse,Rem).
+
+/*
 np(Sentence,np(NP,PP),Rem):-
 	/* e.g. Jane on the dance_floor */
 	np(Sentence,NP,Rem1),
 	pp(Rem1,PP,Rem).
+*/
 
 /* ok the next bit
 NP2 -> Noun
@@ -128,6 +132,19 @@ vp([H|Rest],vp(verb(H),RestParsed)):- check if H is a verb and recurse
 on NP vp([H|Rest],vp(verb(H),RestParsed)):- otherwise check if H is a
 verb and recurse on PP
 
+*/
+
+vp([H|[]],verb(H)).
+
+vp([H|Rest],vp(verb(H),RestParsed)):-
+	np(Rest,RestParsed,_).
+vp([H|Rest],vp(verb(H),RestParsed)):-
+	pp(Rest,RestParsed,_).
+
+
+/*
+
+
 once you have done that you will have your own complete context free
 grammar english language parsing system that you can use wherever you
 want
@@ -139,12 +156,38 @@ Notice how many lines of comment I put into my programs
 */
 
 /* and don't forget we need to describe some english to Prolog as facts */
+det(an).
 det(the).
+det(a).
+det(an).
 noun(cat).
 noun(mat).
+noun(father).
+noun(book).
+noun(boy).
+noun(horses).
+noun(grandfather).
+noun(walk).
+noun(person).
+noun(chat).
+noun(student).
+noun(guitar).
+noun(petrolhead).
+noun(car).
+verb(loves).
 verb(sat).
+verb(likes).
 prep(on).
+adj(racing).
+adj(avid).
+adj(young).
+adj(social).
+adj(sprightly).
+adj(long).
+adj(teenage).
+adj(good).
 adj(big).
+adj(old).
 adj(fat).
 adj(comfy).
 
